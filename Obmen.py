@@ -22,7 +22,7 @@ def exchange():
             data = response.json()
             if code in data['rates']: #проверка кода валюты - есть, правильно - rates is from json
                 exchange_rate = data['rates'][code] #code here is a key - for json file data
-                mb.showinfo('Курс обмена', f'Курс: {exchange_rate} {code} за 1 доллар')
+                mb.showinfo('Курс обмена', f'Курс: {exchange_rate:.2f} {code} за 1 доллар')# .2f - два знака после запятой
             else:
                 mb.showerror('Ошибка', f'Валюта {code} не найдена!')
         except Exception as e:
