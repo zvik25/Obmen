@@ -13,11 +13,16 @@ from tkinter import ttk
 # p.print(data) #печатает в столбик данные json файла. Печать print() - в одну строчку вывод данных json файла.
 
 
-def update_c_label(event): # обновление будет происходить при наступлении события - выбор из выпадающего списка
+def update_b_label(event): # обновление будет происходить при наступлении события - выбор из выпадающего списка
+    code = b_combobox.get()
+    name = cur[code]
+    b_label.config(text=name)
+
+
+def update_t_label(event):
     code = t_combobox.get()
     name = cur[code]
-    c_label.config(text=name)
-
+    t_label.config(text=name)
 
 
 def exchange():
@@ -46,9 +51,10 @@ def exchange():
     else: # if code not entered
         mb.showwarning('Внимание', "Введите код валюты.")
 
+
 cur = {
     'RUB': 'Российский рубль',
-    'BGP': 'Британский фунт стерлингов',
+    'GBP': 'Британский фунт стерлингов',
     'EUR': 'Евро',
     'JPY': 'Японская йена',
     'CNY': 'Китайский юань',
@@ -60,7 +66,6 @@ cur = {
     'USD': 'Американский доллар'
 } #словарь вместо списка
 
-
 """Создаем оконный интерфейс"""
 window = Tk()
 window.title('Курсы обмена валют')
@@ -70,7 +75,10 @@ window.geometry('360x300')
 Label(text='Базовая валюта').pack(padx=10, pady=10) #не будет использоваться => переменную не задаем #For combobox
 b_combobox = ttk.Combobox(values=list(cur.keys()))
 b_combobox.pack(padx=10, pady=10)
+b_combobox.bind('<<ComboboxSelected>>', update_b_label)
 
+b_label = ttk.Label() #для расшифровки кода валюты
+b_label.pack(padx=10, pady=10)
 
 Label(text='Целевая валюта').pack(padx=10, pady=10) #не будет использоваться => переменную не задаем #For combobox
 
@@ -80,16 +88,15 @@ Label(text='Целевая валюта').pack(padx=10, pady=10) #не буде�
 # combobox = ttk.Combobox(values=cur)
 t_combobox = ttk.Combobox(values=list(cur.keys())) #создание списка из словаря
 t_combobox.pack(padx=10, pady=10)
-t_combobox.bind('<<ComboboxSelected>>', update_c_label) #на событие "выбор combobox" будет обновляться надпись на с_label
+t_combobox.bind('<<ComboboxSelected>>', update_t_label) #на событие "выбор combobox" будет обновляться надпись на с_label
 
-c_label = ttk.Label() #для расшифровки кода валюты
-c_label.pack(padx=10, pady=10)
+t_label = ttk.Label() #для расшифровки кода валюты
+t_label.pack(padx=10, pady=10)
 
 # entry=Entry() # не нужны из-за combobox
 # entry.pack(padx=10, pady=10)
 
 Button(text='Получить курс обмена', command=exchange).pack(padx=10, pady=10)
-
 
 window.mainloop()
 
